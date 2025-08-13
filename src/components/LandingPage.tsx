@@ -54,7 +54,7 @@ const LandingPage = ({ onGetStarted }: LandingPageProps) => {
             </div>
             
             <h1 className="text-5xl md:text-7xl font-bold text-medical-800 dark:text-medical-100 mb-6 animate-fade-in" style={{ animationDelay: '0.2s' }}>
-              Lifeline <span className="text-emergency-500">AI</span>
+              Triage<span className="text-emergency-500">X</span>
             </h1>
             
             <p className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 mb-8 max-w-3xl mx-auto animate-fade-in" style={{ animationDelay: '0.4s' }}>
@@ -88,7 +88,7 @@ const LandingPage = ({ onGetStarted }: LandingPageProps) => {
         <div className="container mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold text-medical-800 dark:text-medical-100 mb-4">
-              Why Choose Lifeline AI?
+              Why Choose TriageX?
             </h2>
             <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
               Where Urgency Meets Intelligence.
@@ -184,7 +184,7 @@ const LandingPage = ({ onGetStarted }: LandingPageProps) => {
               Ready to Save Lives?
             </h2>
             <p className="text-xl text-gray-600 dark:text-gray-300 mb-8">
-              Join thousands of healthcare professionals using Lifeline AI to provide 
+              Join thousands of healthcare professionals using TriageX to provide 
               faster, more accurate emergency care.
             </p>
             <Button 
@@ -203,14 +203,17 @@ const LandingPage = ({ onGetStarted }: LandingPageProps) => {
       <footer className="bg-gray-900 dark:bg-black text-white py-12 px-4">
         <div className="container mx-auto text-center">
           <div className="flex items-center justify-center mb-6">
-            <Activity className="w-8 h-8 text-emergency-500 mr-3" />
-            <span className="text-2xl font-bold">Lifeline AI</span>
+            <img 
+              src="/triagex-logo.svg" 
+              alt="TriageX Logo" 
+              className="h-8"
+            />
           </div>
           <p className="text-gray-400 mb-4">
             Emergency Medical Triage System
           </p>
           <p className="text-sm text-gray-500">
-            © 2024 Lifeline AI - For emergency medical use by qualified healthcare professionals
+            © 2024 TriageX - For emergency medical use by qualified healthcare professionals
           </p>
         </div>
       </footer>
