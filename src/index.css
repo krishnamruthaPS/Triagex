@@ -1,0 +1,195 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Emergency Dashboard Design System - Medical Grade Interface */
+
+@layer base {
+  :root {
+    /* Dark theme optimized for 24/7 monitoring displays */
+    --background: 222 20% 8%;
+    --foreground: 210 40% 95%;
+
+    --card: 222 15% 12%;
+    --card-foreground: 210 40% 95%;
+
+    --popover: 222 15% 12%;
+    --popover-foreground: 210 40% 95%;
+
+    /* Medical blue theme */
+    --primary: 217 91% 60%;
+    --primary-foreground: 222 20% 8%;
+
+    --secondary: 222 15% 18%;
+    --secondary-foreground: 210 40% 95%;
+
+    --muted: 222 15% 15%;
+    --muted-foreground: 215 20% 65%;
+
+    --accent: 217 91% 60%;
+    --accent-foreground: 222 20% 8%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 222 15% 18%;
+    --input: 222 15% 18%;
+    --ring: 217 91% 60%;
+
+    /* Severity color system */
+    --critical: 0 84% 60%;
+    --critical-foreground: 210 40% 98%;
+    --serious: 25 95% 53%;
+    --serious-foreground: 222 20% 8%;
+    --moderate: 45 93% 47%;
+    --moderate-foreground: 222 20% 8%;
+
+    /* Medical status colors */
+    --success: 142 76% 36%;
+    --success-foreground: 210 40% 98%;
+    --warning: 38 92% 50%;
+    --warning-foreground: 222 20% 8%;
+
+    /* Gradients for depth */
+    --gradient-primary: linear-gradient(
+      135deg,
+      hsl(217 91% 60%),
+      hsl(217 91% 50%)
+    );
+    --gradient-card: linear-gradient(
+      135deg,
+      hsl(222 15% 12%),
+      hsl(222 15% 14%)
+    );
+    --gradient-critical: linear-gradient(
+      135deg,
+      hsl(0 84% 60%),
+      hsl(0 84% 50%)
+    );
+    --gradient-serious: linear-gradient(
+      135deg,
+      hsl(25 95% 53%),
+      hsl(25 95% 48%)
+    );
+    --gradient-moderate: linear-gradient(
+      135deg,
+      hsl(45 93% 47%),
+      hsl(45 93% 42%)
+    );
+
+    /* Shadows for medical displays */
+    --shadow-card: 0 4px 20px hsl(222 20% 4% / 0.3);
+    --shadow-patient: 0 8px 30px hsl(222 20% 4% / 0.4);
+    --shadow-critical: 0 0 30px hsl(0 84% 60% / 0.3);
+
+    --radius: 0.75rem;
+
+    --sidebar-background: 0 0% 98%;
+
+    --sidebar-foreground: 240 5.3% 26.1%;
+
+    --sidebar-primary: 240 5.9% 10%;
+
+    --sidebar-primary-foreground: 0 0% 98%;
+
+    --sidebar-accent: 240 4.8% 95.9%;
+
+    --sidebar-accent-foreground: 240 5.9% 10%;
+
+    --sidebar-border: 220 13% 91%;
+
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .light {
+    /* Light theme for daytime use if needed */
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --primary: 217 91% 60%;
+    --primary-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
+  /* Custom scrollbar for medical displays */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-muted;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-primary rounded-full;
+  }
+}
+
+@layer components {
+  /* Patient severity variants */
+  .patient-critical {
+    background: linear-gradient(
+      135deg,
+      hsl(var(--critical) / 0.2),
+      hsl(var(--critical) / 0.1)
+    );
+    border-color: hsl(var(--critical) / 0.5);
+    box-shadow: 0 0 20px hsl(var(--critical) / 0.2);
+  }
+
+  .patient-serious {
+    background: linear-gradient(
+      135deg,
+      hsl(var(--serious) / 0.2),
+      hsl(var(--serious) / 0.1)
+    );
+    border-color: hsl(var(--serious) / 0.5);
+    box-shadow: 0 0 20px hsl(var(--serious) / 0.2);
+  }
+
+  .patient-moderate {
+    background: linear-gradient(
+      135deg,
+      hsl(var(--moderate) / 0.2),
+      hsl(var(--moderate) / 0.1)
+    );
+    border-color: hsl(var(--moderate) / 0.5);
+    box-shadow: 0 0 20px hsl(var(--moderate) / 0.2);
+  }
+
+  /* Pulse animation for critical patients */
+  .pulse-critical {
+    animation: pulse-critical 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  @keyframes pulse-critical {
+    0%,
+    100% {
+      box-shadow: 0 0 20px hsl(var(--critical) / 0.2);
+    }
+    50% {
+      box-shadow: 0 0 30px hsl(var(--critical) / 0.4);
+    }
+  }
+
+  /* Status indicators */
+  .status-online {
+    background: hsl(var(--success));
+  }
+
+  .status-offline {
+    background: hsl(var(--destructive));
+  }
+}
