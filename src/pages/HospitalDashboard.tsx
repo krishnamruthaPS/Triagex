@@ -60,28 +60,30 @@ const HospitalDashboard: React.FC = () => {
           s.emit("joinHospitalRoom", data.hospital._id);
           s.on("alert:new", ({ alert }) => {
             const p = alert.patientSnapshot || {};
+            const sevRaw = alert.priority;
+            const severity: Patient["severity"] = sevRaw === 'critical' || sevRaw === 'serious' || sevRaw === 'moderate' ? sevRaw : 'moderate';
             const mapped: Patient = {
               id: alert._id,
               ticketNumber: alert._id.slice(-6),
-              severity: alert.priority || "routine",
+              severity,
               eta: alert.etaSeconds
                 ? Math.round(alert.etaSeconds / 60) + " min"
                 : "—",
               location: { lat: 0, lng: 0, address: p.additionalInfo || "—" },
               vitals: {
-                heartRate: p.heartRate,
+                heartRate: p.heartRate ?? 0,
                 bloodPressure: {
-                  systolic: p.systolicBP,
-                  diastolic: p.diastolicBP,
+                  systolic: p.systolicBP ?? 0,
+                  diastolic: p.diastolicBP ?? 0,
                 },
-                oxygenSaturation: p.oxygenSaturation,
-                temperature: p.temperature,
-                respiratoryRate: undefined,
+                oxygenSaturation: p.oxygenSaturation ?? 0,
+                temperature: p.temperature ?? 0,
+                respiratoryRate: 0,
               },
               condition: p.symptoms ? p.symptoms.join(", ") : "—",
               ambulanceId: "—",
-              age: p.age,
-              gender: p.gender,
+              age: p.age ?? 0,
+              gender: (p.gender === 'M' || p.gender === 'F') ? p.gender : 'M',
               status: alert.status || "incoming",
             };
             setPatients((prev) => [
@@ -99,28 +101,30 @@ const HospitalDashboard: React.FC = () => {
             if (!mounted) return;
             const mapped = alerts.map((alert) => {
               const p = alert.patientSnapshot || {};
+              const sevRaw = alert.priority;
+              const severity: Patient["severity"] = sevRaw === 'critical' || sevRaw === 'serious' || sevRaw === 'moderate' ? sevRaw : 'moderate';
               const patient: Patient = {
                 id: alert._id,
                 ticketNumber: alert._id.slice(-6),
-                severity: alert.priority || "routine",
+                severity,
                 eta: alert.etaSeconds
                   ? Math.round(alert.etaSeconds / 60) + " min"
                   : "—",
                 location: { lat: 0, lng: 0, address: p.additionalInfo || "—" },
                 vitals: {
-                  heartRate: p.heartRate,
+                  heartRate: p.heartRate ?? 0,
                   bloodPressure: {
-                    systolic: p.systolicBP,
-                    diastolic: p.diastolicBP,
+                    systolic: p.systolicBP ?? 0,
+                    diastolic: p.diastolicBP ?? 0,
                   },
-                  oxygenSaturation: p.oxygenSaturation,
-                  temperature: p.temperature,
-                  respiratoryRate: undefined,
+                  oxygenSaturation: p.oxygenSaturation ?? 0,
+                  temperature: p.temperature ?? 0,
+                  respiratoryRate: 0,
                 },
                 condition: p.symptoms ? p.symptoms.join(", ") : "—",
                 ambulanceId: "—",
-                age: p.age,
-                gender: p.gender,
+                age: p.age ?? 0,
+                gender: (p.gender === 'M' || p.gender === 'F') ? p.gender : 'M',
                 status: alert.status || "incoming",
               };
               return patient;

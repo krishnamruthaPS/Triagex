@@ -353,7 +353,7 @@ app.post('/api/alerts', async (req,res) => {
 app.post('/api/alerts/dispatch', async (req,res) => {
   try {
     if(!req.user) return res.status(401).json({ error: 'Unauthorized' });
-    const { hospitalId, triageId, patient, aiScore, aiInstructions } = req.body;
+  const { hospitalId, triageId, patient, aiScore, aiInstructions, etaSeconds } = req.body;
     if(!hospitalId || !triageId) return res.status(400).json({ error: 'hospitalId and triageId required' });
     // Build vitals summary
     let vitalsSummary = '';
@@ -366,7 +366,14 @@ app.post('/api/alerts/dispatch', async (req,res) => {
       vitalsSummary = parts.join(' | ');
     }
     const symptomsSummary = Array.isArray(patient?.symptoms) ? patient.symptoms.slice(0,4).join(', ') : '';
-    const priority = aiScore != null ? (Number(aiScore) >= 8 ? 'critical' : Number(aiScore) >=5 ? 'urgent' : 'routine') : undefined;
+    // Map AI score to standardized severity levels used by frontend (critical, serious, moderate)
+    const priority = aiScore != null
+      ? (Number(aiScore) >= 8
+          ? 'critical'
+          : Number(aiScore) >= 5
+            ? 'serious'
+            : 'moderate')
+      : undefined;
     const patientSnapshot = patient ? {
       patientName: patient.patientName,
       age: patient.age,
@@ -379,7 +386,7 @@ app.post('/api/alerts/dispatch', async (req,res) => {
       symptoms: patient.symptoms,
       additionalInfo: patient.additionalInfo
     } : undefined;
-    const alert = await EnRouteAlert.create({ triageId, hospitalId, createdBy: req.user._id, vitalsSummary, symptomsSummary, priority, patientSnapshot, aiScore, aiInstructions });
+  const alert = await EnRouteAlert.create({ triageId, hospitalId, createdBy: req.user._id, vitalsSummary, symptomsSummary, priority, patientSnapshot, aiScore, aiInstructions, etaSeconds });
     io.to(`hospital:${hospitalId}`).emit('alert:new', { alert });
     res.status(201).json({ alert });
   } catch(err){

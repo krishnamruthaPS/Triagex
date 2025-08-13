@@ -171,6 +171,13 @@ const NearestHospital = () => {
                             if(!dispatchedIds.has(h._id) && currentTriage){
                               try {
                                 setDispatchingId(h._id);
+                                // Rough travel time estimation: assume 40 km/h average urban speed (~0.666 km/min)
+                                let etaSeconds: number | undefined;
+                                if (lat && lng && userLoc) {
+                                  const distKm = getDistance(userLoc.lat, userLoc.lng, lat, lng);
+                                  const minutes = distKm / (40/60); // km / (km per minute)
+                                  etaSeconds = Math.round(minutes * 60);
+                                }
                                 const res = await fetch('http://localhost:5001/api/alerts/dispatch', {
                                   method:'POST',
                                   headers:{'Content-Type':'application/json'},
@@ -180,7 +187,8 @@ const NearestHospital = () => {
                                     triageId: currentTriage.triageId,
                                     patient: currentTriage.patient,
                                     aiScore: currentTriage.aiScore,
-                                    aiInstructions: currentTriage.aiInstructions
+                                    aiInstructions: currentTriage.aiInstructions,
+                                    etaSeconds
                                   })
                                 });
                                 if(!res.ok) throw new Error('Dispatch failed');
