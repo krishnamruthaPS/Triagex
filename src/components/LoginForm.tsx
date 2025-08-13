@@ -1,5 +1,17 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { HospitalCombobox } from "./HospitalCombobox";
+
+/**
+ * LoginForm Component with Smart Hospital Selection
+ * 
+ * Features:
+ * - Role-based authentication (Clinician/Hospital)
+ * - Intelligent hospital dropdown with search suggestions
+ * - Real-time filtering based on hospital name and address
+ * - Debounced search for optimal performance
+ * - Fallback to manual input if needed
+ */
 
 const LoginForm = () => {
   const [email, setEmail] = useState("");
@@ -130,19 +142,14 @@ const LoginForm = () => {
               <label htmlFor="hospitalName" className="block text-sm font-medium text-gray-700">
                 Hospital Name
               </label>
-              <input
-                id="hospitalName"
-                name="hospitalName"
-                type="text"
-                autoComplete="organization"
-                required
+              <HospitalCombobox
                 value={hospitalName}
-                onChange={e => setHospitalName(e.target.value)}
-                placeholder="Enter exact hospital name"
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                onChange={setHospitalName}
+                placeholder="Select your hospital..."
+                className="mt-1"
               />
               <p className="mt-1 text-xs text-gray-500">
-                Enter the hospital name exactly as registered in the system
+                Search and select your hospital from the registered list
               </p>
             </div>
           ) : (
