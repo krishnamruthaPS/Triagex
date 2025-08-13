@@ -71,6 +71,7 @@ export function HospitalCombobox({
       if (response.ok) {
         const data = await response.json()
         setHospitals(data)
+        console.log('✅ Hospitals loaded:', data.length, 'hospitals found')
       } else {
         console.error('Failed to fetch hospitals:', response.statusText)
         // Fallback: You could show an error message to the user
@@ -90,12 +91,9 @@ export function HospitalCombobox({
 
   // Filter hospitals based on search with intelligent matching
   const filteredHospitals = React.useMemo(() => {
-    if (!debouncedSearchValue) {
-      // When no search, return all hospitals sorted alphabetically
-      return hospitals
-        .slice()
-        .sort((a, b) => a.name.localeCompare(b.name))
-        .slice(0, 10) // Show first 10 when no search
+    // Only show suggestions if user has typed at least 3 characters
+    if (!debouncedSearchValue || debouncedSearchValue.length < 3) {
+      return []
     }
     
     const searchLower = debouncedSearchValue.toLowerCase()
@@ -174,7 +172,13 @@ export function HospitalCombobox({
             ) : (
               <>
                 <CommandEmpty className="p-4 text-sm text-gray-500">
-                  {searchValue ? "No hospitals found matching your search." : "No hospitals available."}
+                  {!searchValue ? (
+                    "Type at least 3 characters to search hospitals..."
+                  ) : searchValue.length < 3 ? (
+                    `Type ${3 - searchValue.length} more character${3 - searchValue.length === 1 ? '' : 's'} to search...`
+                  ) : (
+                    "No hospitals found matching your search."
+                  )}
                 </CommandEmpty>
                 <CommandGroup>
                   {filteredHospitals.map((hospital) => (
