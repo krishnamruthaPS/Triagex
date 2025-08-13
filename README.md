@@ -9,7 +9,8 @@ TriageX is an AI-powered emergency medical triage system designed to help health
 
 - 🚨 **AI-Powered Triage Assessment** - Advanced algorithms to prioritize patient care
 - 🏥 **Hospital Dashboard** - Real-time patient management and tracking
-- 📊 **Critical Insights** - Data visualization for better decision making
+- � **Smart Hospital Selection** - Intelligent dropdown with search suggestions for hospital login
+- �📊 **Critical Insights** - Data visualization for better decision making
 - 💊 **Comprehensive Patient Data** - Complete medical information at your fingertips
 - 🔄 **Real-time Updates** - Live status updates for emergency situations
 
