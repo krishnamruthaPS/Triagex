@@ -37,6 +37,7 @@ const NearestHospital = () => {
   const [dispatchingId,setDispatchingId] = useState<string | null>(null);
   const [dispatchedIds,setDispatchedIds] = useState<Set<string>>(new Set());
   const { toast } = useToast();
+  const navigateToDashboard = () => { window.location.href = '/hospital-dashboard'; };
 
   const currentTriage = React.useMemo(() => {
     try { return JSON.parse(sessionStorage.getItem('currentTriage') || 'null'); } catch { return null; }
@@ -187,6 +188,7 @@ const NearestHospital = () => {
                                 sessionStorage.removeItem('currentTriage');
                                 setDispatchedIds(prev => new Set(prev).add(h._id));
                                 toast({ title: 'Hospital Notified', description: `${h.name} has been notified.` });
+                                setTimeout(() => { navigateToDashboard(); }, 1200);
                               } catch(e){
                                 console.error(e);
                                 toast({ title: 'Dispatch Failed', description: 'Could not notify hospital.', variant: 'destructive' });

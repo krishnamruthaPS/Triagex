@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import TriageForm from '@/components/TriageForm';
+import { Button } from '@/components/ui/button';
+// Removed EmergencyModal import
 import PatientDataPreview from '@/components/PatientDataPreview';
 import { useToast } from "@/hooks/use-toast";
 import { getGeminiInstructions } from '@/lib/gemini';
@@ -156,6 +158,8 @@ const Index = () => {
 
   if (!authChecked) return null; // or a spinner
 
+  // Removed EmergencyModal state
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-medical-50 to-blue-50">
       {/* Header */}
@@ -170,9 +174,11 @@ const Index = () => {
         </div>
       </div>
 
+  {/* Emergency Modal removed */}
+
       {/* Main Content */}
       <div className="container mx-auto px-4 py-8">
-  {!showPreview ? (
+        {!showPreview ? (
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
