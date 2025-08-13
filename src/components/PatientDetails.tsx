@@ -204,7 +204,7 @@ const PatientDetails: React.FC<PatientDetailsProps> = ({
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="p-4 rounded-lg bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 text-white shadow">
+                <div className="p-4 rounded-lg bg-blue-600 text-white shadow-md">
                   <p className="text-xs uppercase tracking-wide opacity-80 mb-1">ETA (Minutes)</p>
                   <p className="text-4xl font-extrabold leading-none">
                     {patient.eta === '—' ? 'Pending' : patient.eta}
