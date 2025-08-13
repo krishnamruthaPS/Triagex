@@ -5,7 +5,7 @@ import session from "express-session";
 import passport from "passport";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import { Strategy as LocalStrategy } from "passport-local";
-import bcrypt from "bcryptjs";
+import bcrypt from "bcrypt";
 import cors from "cors";
 
 import User from "./models/User.js";
@@ -24,7 +24,10 @@ dotenv.config();
 const app = express();
 const server = http.createServer(app);
 const io = new SocketIOServer(server, {
-  cors: { origin: 'http://localhost:8080', credentials: true }
+  cors: { 
+    origin: ["http://localhost:8080", "http://localhost:8081"], 
+    credentials: true 
+  }
 });
 
 io.on('connection', (socket) => {
@@ -46,7 +49,7 @@ mongoose.connect(MONGO_URI, {
 
 // === MIDDLEWARE ===
 app.use(cors({
-  origin: "http://localhost:8080",
+  origin: ["http://localhost:8080", "http://localhost:8081"],
   credentials: true,
 }));
 app.use(express.json());
@@ -350,7 +353,7 @@ app.post('/api/alerts', async (req,res) => {
 app.post('/api/alerts/dispatch', async (req,res) => {
   try {
     if(!req.user) return res.status(401).json({ error: 'Unauthorized' });
-    const { hospitalId, triageId, patient, aiScore, aiInstructions } = req.body;
+  const { hospitalId, triageId, patient, aiScore, aiInstructions, etaSeconds } = req.body;
     if(!hospitalId || !triageId) return res.status(400).json({ error: 'hospitalId and triageId required' });
     // Build vitals summary
     let vitalsSummary = '';
@@ -363,7 +366,14 @@ app.post('/api/alerts/dispatch', async (req,res) => {
       vitalsSummary = parts.join(' | ');
     }
     const symptomsSummary = Array.isArray(patient?.symptoms) ? patient.symptoms.slice(0,4).join(', ') : '';
-    const priority = aiScore != null ? (Number(aiScore) >= 8 ? 'critical' : Number(aiScore) >=5 ? 'urgent' : 'routine') : undefined;
+    // Map AI score to standardized severity levels used by frontend (critical, serious, moderate)
+    const priority = aiScore != null
+      ? (Number(aiScore) >= 8
+          ? 'critical'
+          : Number(aiScore) >= 5
+            ? 'serious'
+            : 'moderate')
+      : undefined;
     const patientSnapshot = patient ? {
       patientName: patient.patientName,
       age: patient.age,
@@ -376,7 +386,7 @@ app.post('/api/alerts/dispatch', async (req,res) => {
       symptoms: patient.symptoms,
       additionalInfo: patient.additionalInfo
     } : undefined;
-    const alert = await EnRouteAlert.create({ triageId, hospitalId, createdBy: req.user._id, vitalsSummary, symptomsSummary, priority, patientSnapshot, aiScore, aiInstructions });
+  const alert = await EnRouteAlert.create({ triageId, hospitalId, createdBy: req.user._id, vitalsSummary, symptomsSummary, priority, patientSnapshot, aiScore, aiInstructions, etaSeconds });
     io.to(`hospital:${hospitalId}`).emit('alert:new', { alert });
     res.status(201).json({ alert });
   } catch(err){

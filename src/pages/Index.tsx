@@ -166,10 +166,11 @@ const Index = () => {
       <div className="bg-white shadow-sm border-b border-gray-200">
         <div className="container mx-auto px-4 py-6">
           <div className="flex items-center justify-center">
-            <div className="text-center">
-              <h1 className="text-4xl font-bold text-medical-800">Lifeline AI</h1>
-              <p className="text-lg text-gray-600 mt-2">Emergency Medical Triage System</p>
-            </div>
+            <img 
+              src="/triagex-logo.svg" 
+              alt="TriageX Logo" 
+              className="h-12"
+            />
           </div>
         </div>
       </div>
@@ -218,7 +219,7 @@ const Index = () => {
       <div className="bg-gray-800 text-white py-6 mt-16">
         <div className="container mx-auto px-4 text-center">
           <p className="text-sm">
-            © 2024 Lifeline AI - Emergency Medical Triage System
+            © 2024 TriageX - Emergency Medical Triage System
           </p>
           <p className="text-xs text-gray-400 mt-1">
             For emergency medical use by qualified healthcare professionals

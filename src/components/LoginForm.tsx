@@ -1,5 +1,17 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { HospitalCombobox } from "./HospitalCombobox";
+
+/**
+ * LoginForm Component with Smart Hospital Selection
+ * 
+ * Features:
+ * - Role-based authentication (Clinician/Hospital)
+ * - Intelligent hospital dropdown with search suggestions
+ * - Real-time filtering based on hospital name and address
+ * - Debounced search for optimal performance
+ * - Fallback to manual input if needed
+ */
 
 const LoginForm = () => {
   const [email, setEmail] = useState("");
@@ -96,46 +108,12 @@ const LoginForm = () => {
       {/* Login Card on the right */}
       <div className="relative z-20 w-full max-w-md ml-auto mr-16 my-16 space-y-8 bg-white/40 backdrop-blur-lg rounded-xl shadow-lg p-8 border border-white border-opacity-30">
         <div className="flex flex-col items-center">
-        {/* Lifeline AI Logo */}
-        <svg
-          width="200"
-          height="60"
-          viewBox="0 0 200 60"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          className="mb-4"
-        >
-          {/* Lifeline (heartbeat) */}
-          <polyline
-            points="30,30 40,30 43,20 47,40 51,25 55,30 65,30"
-            stroke="#1d3557"
-            strokeWidth="2"
-            fill="none"
-          />
-          {/* AI Node */}
-          <circle cx="72" cy="30" r="4" fill="#457b9d" />
-          <line x1="72" y1="30" x2="82" y2="30" stroke="#457b9d" strokeWidth="2" />
-          <circle cx="86" cy="30" r="2" fill="#457b9d" />
-          {/* Text */}
-          <text
-            x="95"
-            y="35"
-            fontFamily="Segoe UI, sans-serif"
-            fontSize="20"
-            fill="#1d3557"
-          >
-            Lifeline
-          </text>
-          <text
-            x="160"
-            y="35"
-            fontFamily="Segoe UI, sans-serif"
-            fontSize="18"
-            fill="#a8dadc"
-          >
-            AI
-          </text>
-        </svg>
+        {/* TriageX Logo */}
+        <img 
+          src="/triagex-logo.svg" 
+          alt="TriageX Logo" 
+          className="h-12 mb-4"
+        />
 
         <h2 className="text-center text-2xl font-bold text-gray-900">
           {isRegister ? 'Create an account' : 'Sign in to your account'}
@@ -164,19 +142,14 @@ const LoginForm = () => {
               <label htmlFor="hospitalName" className="block text-sm font-medium text-gray-700">
                 Hospital Name
               </label>
-              <input
-                id="hospitalName"
-                name="hospitalName"
-                type="text"
-                autoComplete="organization"
-                required
+              <HospitalCombobox
                 value={hospitalName}
-                onChange={e => setHospitalName(e.target.value)}
-                placeholder="Enter exact hospital name"
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                onChange={setHospitalName}
+                placeholder="Select your hospital..."
+                className="mt-1"
               />
               <p className="mt-1 text-xs text-gray-500">
-                Enter the hospital name exactly as registered in the system
+                Search and select your hospital from the registered list
               </p>
             </div>
           ) : (

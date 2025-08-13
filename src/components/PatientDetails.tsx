@@ -20,7 +20,7 @@ import {
 } from "lucide-react";
 import { Patient } from "@/types/patient";
 import { cn } from "@/lib/utils";
-import PatientMap from "@/components/PatientMap";
+// Removed live map view – replaced with travel time estimation card
 
 interface PatientDetailsProps {
   patient: Patient | null;
@@ -194,28 +194,28 @@ const PatientDetails: React.FC<PatientDetailsProps> = ({
             </Card>
           </div>
 
-          {/* Map */}
+          {/* Estimated Travel Time (replacing live location feature) */}
           <div className="space-y-4">
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center space-x-2">
-                  <MapPin className="h-5 w-5 text-primary" />
-                  <span>Live Location</span>
+                  <Clock className="h-5 w-5 text-primary" />
+                  <span>Estimated Arrival</span>
                 </CardTitle>
               </CardHeader>
-              <CardContent>
-                <div className="h-64 rounded-lg overflow-hidden">
-                  <PatientMap patient={patient} />
+              <CardContent className="space-y-4">
+                <div className="p-4 rounded-lg bg-blue-600 text-white shadow-md">
+                  <p className="text-xs uppercase tracking-wide opacity-80 mb-1">ETA (Minutes)</p>
+                  <p className="text-4xl font-extrabold leading-none">
+                    {patient.eta === '—' ? 'Pending' : patient.eta}
+                  </p>
                 </div>
-                <div className="mt-3 p-3 bg-muted rounded-lg">
-                  <p className="text-sm text-muted-foreground">
-                    Current Location
-                  </p>
-                  <p className="font-medium">{patient.location.address}</p>
-                  <p className="text-xs text-muted-foreground mt-1">
-                    {patient.location.lat.toFixed(6)},{" "}
-                    {patient.location.lng.toFixed(6)}
-                  </p>
+                <div className="text-sm text-muted-foreground">
+                  The ETA is an approximate travel time from the dispatch origin to your hospital. Actual arrival may vary due to traffic and route conditions.
+                </div>
+                <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                  <MapPin className="h-3.5 w-3.5" />
+                  <span>Origin details withheld (no live tracking enabled)</span>
                 </div>
               </CardContent>
             </Card>

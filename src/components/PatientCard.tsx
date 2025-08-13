@@ -34,7 +34,11 @@ const PatientCard: React.FC<PatientCardProps> = ({ patient, onClick }) => {
     }
   };
 
-  const severityConfig = getSeverityConfig(patient.severity);
+  const severityConfig = getSeverityConfig(patient.severity) || {
+    className: 'patient-moderate',
+    badge: 'bg-moderate text-moderate-foreground',
+    label: patient.severity?.toUpperCase?.() || 'MODERATE'
+  };
 
   return (
     <Card
