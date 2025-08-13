@@ -5,7 +5,7 @@ import session from "express-session";
 import passport from "passport";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import { Strategy as LocalStrategy } from "passport-local";
-import bcrypt from "bcryptjs";
+import bcrypt from "bcrypt";
 import cors from "cors";
 
 import User from "./models/User.js";
@@ -24,7 +24,10 @@ dotenv.config();
 const app = express();
 const server = http.createServer(app);
 const io = new SocketIOServer(server, {
-  cors: { origin: 'http://localhost:8080', credentials: true }
+  cors: { 
+    origin: ["http://localhost:8080", "http://localhost:8081"], 
+    credentials: true 
+  }
 });
 
 io.on('connection', (socket) => {
@@ -46,7 +49,7 @@ mongoose.connect(MONGO_URI, {
 
 // === MIDDLEWARE ===
 app.use(cors({
-  origin: "http://localhost:8080",
+  origin: ["http://localhost:8080", "http://localhost:8081"],
   credentials: true,
 }));
 app.use(express.json());
