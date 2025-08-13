@@ -121,18 +121,25 @@ const Index = () => {
         headers: { "Content-Type": "application/json" },
         credentials: "include",
         body: JSON.stringify({
-          ...patientData,
+          patientName: patientData.patientName,
+          age: patientData.age ? Number(patientData.age) : null,
+          gender: patientData.gender,
+          heartRate: patientData.heartRate ? Number(patientData.heartRate) : null,
+          systolicBP: patientData.systolicBP ? Number(patientData.systolicBP) : null,
+          diastolicBP: patientData.diastolicBP ? Number(patientData.diastolicBP) : null,
+          temperature: patientData.temperature ? Number(patientData.temperature) : null,
+          oxygenSaturation: patientData.oxygenSaturation ? Number(patientData.oxygenSaturation) : null,
+          symptoms: patientData.symptoms,
           additionalInfo: patientData.additionalInfo || "",
           aiScore: aiScore ? Number(aiScore) : null,
           aiInstructions: aiInstructions || instructions || "",
+          // selectedHospitalId, selectedHospitalName, selectedHospitalAddress, userId can be added later
         }),
       });
       if (!response.ok) throw new Error('Submission failed');
-      // Expect backend returns created triage record (with _id)
-  const triageResp = await response.json().catch(()=> null);
-  const triageRecord = triageResp && (triageResp.triage || triageResp);
-  if (triageRecord && triageRecord._id) {
-        // Persist minimal data so hospital selection page can dispatch it
+      const triageResp = await response.json().catch(()=> null);
+      const triageRecord = triageResp && (triageResp.triage || triageResp);
+      if (triageRecord && triageRecord._id) {
         sessionStorage.setItem('currentTriage', JSON.stringify({
           triageId: triageRecord._id,
           patient: patientData,
@@ -144,7 +151,6 @@ const Index = () => {
         title: 'Triage Submitted',
         description: 'Patient triage saved. Choose a hospital to notify next.'
       });
-      // reset local triage state and navigate
       setPatientData(null);
       setShowPreview(false);
       setInstructions(null);
