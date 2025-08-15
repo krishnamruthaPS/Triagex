@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -55,6 +55,33 @@ const PatientDataPreview: React.FC<PatientDataPreviewProps> = ({ data, criticali
   const formatGender = (gender: string) => {
     return gender.charAt(0).toUpperCase() + gender.slice(1);
   };
+
+  // Animation for criticality score
+  const [animatedScore, setAnimatedScore] = useState<number>(0);
+  useEffect(() => {
+    if (typeof criticalityScore === 'number' && !isNaN(criticalityScore) && criticalityScore > 0) {
+      let start = 0;
+      const duration = 800; // ms
+      const stepTime = 16; // ~60fps
+      const steps = Math.ceil(duration / stepTime);
+      const increment = (criticalityScore - start) / steps;
+      let current = start;
+      let step = 0;
+      const animate = () => {
+        step++;
+        current += increment;
+        if (step < steps) {
+          setAnimatedScore(Number(current.toFixed(2)));
+          requestAnimationFrame(animate);
+        } else {
+          setAnimatedScore(Number(criticalityScore));
+        }
+      };
+      animate();
+    } else {
+      setAnimatedScore(criticalityScore ?? 0);
+    }
+  }, [criticalityScore]);
 
   return (
     <Card className="w-full max-w-4xl mx-auto shadow-xl mt-8 bg-background text-foreground">
@@ -183,7 +210,7 @@ const PatientDataPreview: React.FC<PatientDataPreviewProps> = ({ data, criticali
           <div className="flex flex-col items-center justify-center w-full">
             <div style={{ width: '12rem', height: '12rem', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '2px solid #e5e7eb', borderRadius: '1rem', background: '#f9fafb', marginBottom: '0.5rem' }}>
               {typeof criticalityScore === 'number' && !isNaN(criticalityScore) && criticalityScore > 0 ? (
-                <CriticalityDoughnutChart score={criticalityScore} />
+                <CriticalityDoughnutChart score={animatedScore} />
               ) : (
                 <span style={{ color: '#64748b', fontWeight: 500 }}>No score available</span>
               )}
